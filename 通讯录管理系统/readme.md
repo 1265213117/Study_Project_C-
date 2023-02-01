@@ -1,6 +1,6 @@
 # 通讯录管理系统
 
-该系统是本人在温习C++基本语法知识过程中跟随B站黑马程序员视频完成。
+该系统是本人在温习C++基本语法知识过程中跟随[B站黑马程序员视频](https://www.bilibili.com/video/BV1et411b73Z?p=84&spm_id_from=pageDriver&vd_source=d9a247b832223a96fd8f8be6c1412759)完成。
 
 主要包含以下功能：  
 
