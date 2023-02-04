@@ -24,6 +24,7 @@ int main()
             break;
         case 1://1、增加职工信息
             wm.Add_Emp();
+            wm.save();
             break;
         case 2://2、显示职工信息
             break;

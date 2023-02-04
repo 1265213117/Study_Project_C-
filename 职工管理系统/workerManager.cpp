@@ -1,9 +1,19 @@
 #include "workerManager.h"
 
 WorkerManager::WorkerManager(){
-    //初始化属性
-    this->m_EmpNum = 0;
-    this->m_EmpArray = NULL;
+
+    ifstream ifs;
+    ifs.open(FILENAME,ios::in);
+
+    if(!ifs.is_open())
+    {
+        cout<<"文件不存在"<<endl;
+        this->m_EmpNum =0;
+        this->m_FileIsEmpty = true;
+        this->m_EmpArray =NULL;
+        ifs.close();
+        return ;
+    }
 
 }
 
@@ -63,6 +73,8 @@ void WorkerManager::Add_Emp()
         this->m_EmpNum = newSize;
         cout<<"成功添加"<<addNum<<"名新职工"<<endl;
 
+
+        this->save();
     }
     else
     {
@@ -86,11 +98,33 @@ void WorkerManager::Show_Menu()
     cout<<endl;
 }
 
+
+void WorkerManager::save()
+{
+    ofstream ofs;
+    ofs.open(FILENAME, ios::out);
+
+    for(int i=0;i<this->m_EmpNum;i++)
+    {
+        ofs <<this->m_EmpArray[i]->m_Id<<" "
+        <<this->m_EmpArray[i]->m_Name<<" "
+        <<this->m_EmpArray[i]->m_DeptId<<endl;
+    }
+
+    ofs.close();
+}
+
 void WorkerManager::ExitSystem(){
     cout<<"欢迎下次使用"<<endl;
     exit(0);
 }
 
 WorkerManager::~WorkerManager(){
+
+    if(this->m_EmpArray != NULL)
+    {
+        delete[] this->m_EmpArray;
+        this->m_EmpArray=NULL;
+    }
 
 }
