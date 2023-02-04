@@ -5,7 +5,7 @@ WorkerManager::WorkerManager(){
     ifstream ifs;
     ifs.open(FILENAME,ios::in);
 
-    if(!ifs.is_open())
+    if(!ifs.is_open())//文件不存在
     {
         cout<<"文件不存在"<<endl;
         this->m_EmpNum =0;
@@ -14,7 +14,73 @@ WorkerManager::WorkerManager(){
         ifs.close();
         return ;
     }
+    char ch;
+    ifs>>ch;
+    if(ifs.eof())//文件存在，数据为空
+    {
+        cout<<"文件为空！"<<endl;
+        this->m_EmpNum = 0;
+        this->m_EmpArray = NULL;
+        this->m_FileIsEmpty = true;
+        ifs.close();
+        return ;
+    }
 
+    //文件存在且记录不为空
+    int num = this->get_EmpNum();
+    cout<<"职工人数为："<<num<<endl;
+    this->m_EmpNum = num;
+
+    this->m_EmpArray = new Worker *[this->m_EmpNum];
+    this->init_Emp();
+
+}
+
+int WorkerManager::get_EmpNum()
+{
+    ifstream ifs;
+    ifs.open(FILENAME, ios::in);
+
+    int id;
+    string name;
+    int dId;
+    int num=0;
+    while(ifs>>id&&ifs>>name&&ifs>>dId)
+    {
+
+        num++;
+    }
+    return num;
+}
+
+void WorkerManager::init_Emp()
+{
+    ifstream ifs;
+    ifs.open(FILENAME,ios::in);
+
+    int id;
+    string name;
+    int dId;
+
+    int index =0;
+    while(ifs>>id && ifs>>name && ifs>>dId)
+    {
+        Worker * worker = NULL;
+        if(dId == 1)
+        {
+            worker = new Employee(id, name, dId);
+        }
+        else if(dId == 2)
+        {
+            worker = new Manager(id, name, dId);
+        }
+        else if(dId == 3)
+        {
+            worker = new Boss(id, name, dId);
+        }
+        this->m_EmpArray[index] = worker;
+        index++;
+    }
 }
 
 void WorkerManager::Add_Emp()
@@ -73,6 +139,8 @@ void WorkerManager::Add_Emp()
         this->m_EmpNum = newSize;
         cout<<"成功添加"<<addNum<<"名新职工"<<endl;
 
+        this->m_FileIsEmpty = false;
+
 
         this->save();
     }
@@ -112,6 +180,66 @@ void WorkerManager::save()
     }
 
     ofs.close();
+}
+
+void WorkerManager::show_Emp()
+{
+    if(this->m_FileIsEmpty)
+    {
+        cout<<"数据文件不存在或记录为空"<<endl;
+    }
+    else
+    {
+        for(int i=0;i<this->m_EmpNum;i++)
+        {
+            this->m_EmpArray[i]->showInfo();
+        }
+    }
+}
+
+int WorkerManager::isExist(int id)
+{
+    int index = -1;
+
+    for(int i=0;i<this->m_EmpNum;i++)
+    {
+        if(this->m_EmpArray[i]->m_Id == id)
+        {
+            index = i;
+            break;
+        }
+    }
+
+    return index;
+}
+
+void WorkerManager::del_Emp(){
+    if(this->m_FileIsEmpty)
+    {
+        cout<<"数据文件不存在或记录为空"<<endl;
+    }
+    else
+    {
+        cout<<"请输入想要删除的职工的编号："<<endl;
+        int id;
+        cin>>id;
+        int ret = this->isExist(id);
+        if(ret!=-1)
+        {
+            for(int i=ret;i<this->m_EmpNum-1;i++)
+            {
+                this->m_EmpArray[i] = this->m_EmpArray[i+1];
+            }
+            this->m_EmpNum--;
+            this->save();
+            cout<<"删除成功"<<endl;
+        }
+        else
+        {
+            
+            cout<<"删除失败，未找到该职工"<<endl;
+        }
+    }
 }
 
 void WorkerManager::ExitSystem(){

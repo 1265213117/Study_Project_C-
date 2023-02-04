@@ -22,6 +22,19 @@ public:
     //退出系统
     void ExitSystem();
 
+    //初始化员工
+    void init_Emp();
+
+    //显示职工
+    void show_Emp();
+
+    //判断职工是否存在，返回下标，若不存在，则返回-1
+    int isExist(int id);
+
+    //删除职工
+    void del_Emp();
+
+
     //记录职工人数
     int m_EmpNum;
 
@@ -37,6 +50,8 @@ public:
     //保存文件
     void save();
     
+    //统计人数
+    int get_EmpNum();
     //析构函数
     ~WorkerManager();
 
