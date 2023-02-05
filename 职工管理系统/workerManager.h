@@ -34,6 +34,12 @@ public:
     //删除职工
     void del_Emp();
 
+    //修改职工
+    void Mod_Emp();
+
+    //查找职工
+    void Find_Emp();
+
 
     //记录职工人数
     int m_EmpNum;
@@ -47,8 +53,14 @@ public:
     //添加职工
     void Add_Emp();
 
+    //排序职工
+    void Sort_Emp();
+
     //保存文件
     void save();
+
+    //清空数据文件
+    void Clean_File();
     
     //统计人数
     int get_EmpNum();
